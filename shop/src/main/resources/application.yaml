@@ -1,0 +1,21 @@
+spring:
+  # 鏁版嵁搴撻厤缃?
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/shop?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: 123456
+
+# MyBatis閰嶇疆
+mybatis:
+  configuration:
+    # 寮€鍚棩蹇楋紙鏂逛究璋冭瘯锛?
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  # 瀹炰綋绫诲埆鍚嶅寘鎵弿
+  type-aliases-package: org.example.shop.entity
+  # 鏄犲皠鏂囦欢浣嶇疆
+  mapper-locations: classpath:mapper/*.xml
+
+# 鏈嶅姟鍣ㄩ厤缃?
+server:
+  port: 8080  # 椤圭洰鍚姩绔彛

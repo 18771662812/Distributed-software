@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.shop.mapper.ProductMapper">
+
+    <resultMap id="productMap" type="Product">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+        <result column="price" property="price"/>
+        <result column="stock" property="stock"/>
+        <result column="category" property="category"/>
+        <result column="image_url" property="imageUrl"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <select id="selectById" parameterType="Long" resultMap="productMap">
+        SELECT id, name, description, price, stock, category, image_url, status, create_time, update_time
+        FROM product
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectAll" resultMap="productMap">
+        SELECT id, name, description, price, stock, category, image_url, status, create_time, update_time
+        FROM product
+        WHERE status = 1
+        ORDER BY create_time DESC
+    </select>
+
+    <insert id="insert" parameterType="Product" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO product (name, description, price, stock, category, image_url, status, create_time, update_time)
+        VALUES (#{name}, #{description}, #{price}, #{stock}, #{category}, #{imageUrl}, #{status}, #{createTime}, #{updateTime})
+    </insert>
+
+    <update id="update" parameterType="Product">
+        UPDATE product
+        SET name = #{name}, description = #{description}, price = #{price}, stock = #{stock},
+            category = #{category}, image_url = #{imageUrl}, status = #{status}, update_time = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        DELETE FROM product WHERE id = #{id}
+    </delete>
+
+</mapper>

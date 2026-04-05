@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import java.time.LocalDateTime;
 
 /**
  * 用户业务层实现类
@@ -41,8 +40,9 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         // 4. 设置时间
-        user.setCreateTime(LocalDateTime.now());
-        user.setUpdateTime(LocalDateTime.now());
+        long now = System.currentTimeMillis();
+        user.setCreateTime(now);
+        user.setUpdateTime(now);
 
         // 5. 保存用户信息
         return userMapper.insert(user) > 0;

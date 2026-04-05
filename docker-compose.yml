@@ -39,6 +39,46 @@ services:
       timeout: 5s
       retries: 5
 
+  # Zookeeper（Kafka依赖）
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: shop-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - shop-network
+    healthcheck:
+      test: ["CMD", "cub", "zk-ready", "zookeeper:2181", "30"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Kafka 消息队列
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: shop-kafka
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    ports:
+      - "9092:9092"
+    networks:
+      - shop-network
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   # 后端实例 1
   backend1:
     build:
@@ -46,7 +86,7 @@ services:
       dockerfile: Dockerfile
     container_name: shop-backend-1
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/shop?useUnicode=true&characterEncoding=utf8&useSSL=false
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/shop?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 123456
       SPRING_REDIS_HOST: redis
@@ -59,13 +99,10 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      kafka:
+        condition: service_healthy
     networks:
       - shop-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/user/login"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   # 后端实例 2
   backend2:
@@ -74,7 +111,7 @@ services:
       dockerfile: Dockerfile
     container_name: shop-backend-2
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/shop?useUnicode=true&characterEncoding=utf8&useSSL=false
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/shop?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 123456
       SPRING_REDIS_HOST: redis
@@ -87,13 +124,10 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      kafka:
+        condition: service_healthy
     networks:
       - shop-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/user/login"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   # Nginx 负载均衡器
   nginx:

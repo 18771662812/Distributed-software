@@ -1,7 +1,6 @@
 package org.example.shop.entity;
 
 import lombok.Data;
-import java.time.LocalDateTime;
 
 /**
  * 用户实体类
@@ -35,12 +34,12 @@ public class User {
     private String email;
 
     /**
-     * 创建时间
+     * 创建时间（毫秒时间戳）
      */
-    private LocalDateTime createTime;
+    private Long createTime;
 
     /**
-     * 更新时间
+     * 更新时间（毫秒时间戳）
      */
-    private LocalDateTime updateTime;
+    private Long updateTime;
 }

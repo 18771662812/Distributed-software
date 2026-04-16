@@ -1,4 +1,4 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { User, Lock } from '@element-plus/icons-vue'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { reactive, ref } from 'vue'
@@ -54,160 +54,278 @@ const handleLogin = async () => {
 
 <template>
   <div class="auth-page">
-    <div class="auth-panel page-container">
-      <section class="hero-panel">
-        <span class="hero-badge">Mall Commerce Suite</span>
-        <h1>连接用户、商品与订单的商城入口</h1>
-        <p>
-          以 Vue3 + Pinia + Axios + Element Plus 构建的企业级前端认证页，支持表单校验、状态持久化、鉴权跳转与统一异常处理。
-        </p>
-        <ul class="hero-points">
-          <li>统一登录态管理</li>
-          <li>支持记住登录状态</li>
-          <li>受保护页面自动拦截</li>
-        </ul>
-      </section>
-
-      <section class="form-panel">
-        <div class="form-header">
-          <h2>欢迎登录</h2>
-          <p>登录后进入商城首页、购物车、订单与个人中心。</p>
+    <div class="auth-container">
+      <div class="auth-card glass-panel">
+        <div class="hero-section">
+          <div class="brand-box">
+            <div class="logo"></div>
+            <span class="brand-name">极简商城</span>
+          </div>
+          <h1 class="hero-title">欢迎来到 <br/> 品质空间</h1>
+          <p class="hero-text">在这里，探索极简与强大并存的购物新纪元，开启您的专属品质生活。</p>
+          
+          <div class="features">
+            <div class="feature-tag">安全加密</div>
+            <div class="feature-tag">极速达</div>
+            <div class="feature-tag">贴心服务</div>
+          </div>
         </div>
 
-        <el-form ref="formRef" :model="form" :rules="rules" label-position="top" size="large">
-          <el-form-item label="账号" prop="account">
-            <el-input
-              v-model="form.account"
-              placeholder="请输入用户名 / 手机号 / 邮箱"
-              :prefix-icon="User"
-              clearable
-            />
-          </el-form-item>
-
-          <el-form-item label="密码" prop="password">
-            <el-input
-              v-model="form.password"
-              type="password"
-              show-password
-              placeholder="请输入登录密码"
-              :prefix-icon="Lock"
-              clearable
-              @keyup.enter="handleLogin"
-            />
-          </el-form-item>
-
-          <div class="form-tools">
-            <el-checkbox v-model="form.remember">记住登录状态</el-checkbox>
-            <RouterLink to="/register">没有账号？去注册</RouterLink>
+        <div class="form-section">
+          <div class="form-header">
+            <h2>登录</h2>
+            <p>输入您的凭据以继续购物旅程。</p>
           </div>
 
-          <el-button type="primary" class="submit-btn" :loading="loading" @click="handleLogin">
-            立即登录
-          </el-button>
-        </el-form>
-      </section>
+          <el-form ref="formRef" :model="form" :rules="rules" label-position="top">
+            <el-form-item label="账号" prop="account">
+              <el-input
+                v-model="form.account"
+                placeholder="用户名 / 邮箱 / 手机号"
+                :prefix-icon="User"
+                class="custom-input"
+              />
+            </el-form-item>
+
+            <el-form-item label="密码" prop="password">
+              <el-input
+                v-model="form.password"
+                type="password"
+                show-password
+                placeholder="您的登录密码"
+                :prefix-icon="Lock"
+                class="custom-input"
+                @keyup.enter="handleLogin"
+              />
+            </el-form-item>
+
+            <div class="form-options">
+              <el-checkbox v-model="form.remember">记住我</el-checkbox>
+              <RouterLink to="/register" class="link">注册新账号</RouterLink>
+            </div>
+
+            <el-button 
+              type="primary" 
+              class="submit-btn" 
+              :loading="loading" 
+              @click="handleLogin"
+            >
+              立即登录
+            </el-button>
+          </el-form>
+          
+          <div class="form-footer">
+            <p>登录即代表您同意我们的 <a href="#">服务协议</a></p>
+          </div>
+        </div>
+      </div>
     </div>
+    
+    <!-- Decorative elements -->
+    <div class="deco-blob blob-1"></div>
+    <div class="deco-blob blob-2"></div>
   </div>
 </template>
 
 <style scoped lang="scss">
+// ... (Styles remain unchanged)
 .auth-page {
+  min-height: 100vh;
   display: flex;
   align-items: center;
-  min-height: 100vh;
-  padding: 32px 0;
-}
-
-.auth-panel {
-  display: grid;
-  grid-template-columns: 1.1fr 460px;
+  justify-content: center;
+  background-color: var(--bg-main);
+  position: relative;
   overflow: hidden;
-  border-radius: 32px;
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 28px 70px rgba(15, 23, 42, 0.16);
+  padding: 20px;
 }
 
-.hero-panel {
-  padding: 56px;
-  color: #fff;
-  background:
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.22), transparent 22%),
-    linear-gradient(145deg, #14317a, #2750c3 50%, #d94f2b);
+.auth-container {
+  width: 100%;
+  max-width: 1000px;
+  z-index: 10;
 }
 
-.hero-badge {
-  display: inline-flex;
-  padding: 7px 14px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.14);
-  font-size: 12px;
-  letter-spacing: 0.1em;
-}
-
-.hero-panel h1 {
-  margin: 22px 0 18px;
-  font-size: clamp(34px, 4vw, 48px);
-  line-height: 1.12;
-}
-
-.hero-panel p {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.82);
-}
-
-.hero-points {
+.auth-card {
   display: grid;
-  gap: 14px;
-  padding: 0;
-  margin: 40px 0 0;
-  list-style: none;
+  grid-template-columns: 1fr 1fr;
+  min-height: 600px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
 }
 
-.hero-points li {
-  padding: 16px 18px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.12);
+.hero-section {
+  background: var(--color-primary);
+  background: linear-gradient(135deg, var(--color-primary), #1a4bc4);
+  padding: 60px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .brand-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 60px;
+    
+    .logo {
+      width: 32px;
+      height: 32px;
+      border: 3px solid white;
+      border-radius: var(--radius-sm);
+    }
+    
+    .brand-name {
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      font-size: 18px;
+    }
+  }
+
+  .hero-title {
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 24px;
+    color: white;
+  }
+
+  .hero-text {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    margin-bottom: 40px;
+    max-width: 300px;
+  }
+
+  .features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    
+    .feature-tag {
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
 }
 
-.form-panel {
-  padding: 56px 42px;
+.form-section {
+  padding: 60px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .form-header {
+    margin-bottom: 40px;
+    
+    h2 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    p {
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+  }
 }
 
-.form-header h2 {
-  margin: 0;
-  font-size: 30px;
+:deep(.custom-input) {
+  .el-input__wrapper {
+    background-color: var(--slate-50);
+    box-shadow: none !important;
+    border: 1px solid var(--slate-100);
+    border-radius: var(--radius-md);
+    padding: 10px 16px;
+    transition: all 0.3s ease;
+    
+    &:hover, &.is-focus {
+      border-color: var(--color-primary);
+      background-color: white;
+    }
+  }
 }
 
-.form-header p {
-  margin: 10px 0 28px;
-  color: #6b7280;
-}
-
-.form-tools {
+.form-options {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
-  font-size: 14px;
+  margin-bottom: 32px;
+  
+  .link {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-primary);
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .submit-btn {
   width: 100%;
-  height: 48px;
-  border-radius: 14px;
+  height: 56px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 20px -5px rgba(0, 47, 167, 0.2);
+  margin-bottom: 24px;
 }
 
-@media (max-width: 960px) {
-  .auth-panel {
+.form-footer {
+  text-align: center;
+  font-size: 13px;
+  color: var(--slate-400);
+  
+  a {
+    color: var(--slate-600);
+    font-weight: 600;
+  }
+}
+
+.deco-blob {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  filter: blur(80px);
+  opacity: 0.4;
+  z-index: 1;
+  border-radius: 50%;
+}
+
+.blob-1 {
+  top: -100px;
+  right: -100px;
+  background: var(--color-primary-soft);
+}
+
+.blob-2 {
+  bottom: -150px;
+  left: -150px;
+  background: #4f46e533;
+}
+
+@media (max-width: 900px) {
+  .auth-card {
     grid-template-columns: 1fr;
   }
-
-  .hero-panel {
+  
+  .hero-section {
     display: none;
   }
-
-  .form-panel {
-    padding: 32px 20px;
+  
+  .form-section {
+    padding: 40px;
   }
 }
 </style>

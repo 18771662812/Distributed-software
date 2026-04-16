@@ -1,4 +1,6 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
+import { Right } from '@element-plus/icons-vue'
+
 interface CategoryItem {
   title: string
   desc: string
@@ -11,65 +13,97 @@ defineProps<{
 </script>
 
 <template>
-  <section id="category" class="category-panel">
-    <div class="section-header">
-      <div>
-        <h2 class="section-title">商品分类</h2>
-        <p class="section-subtitle">按主营业务板块组织商品，便于后续接入真实分类接口与搜索筛选。</p>
+  <div class="category-grid">
+    <div v-for="item in categories" :key="item.title" class="category-card hover-lift">
+      <div class="icon-wrapper">
+        <span class="category-icon">{{ item.icon }}</span>
+      </div>
+      <div class="content">
+        <h3 class="category-title">{{ item.title }}</h3>
+        <p class="category-desc">{{ item.desc }}</p>
+      </div>
+      <div class="arrow">
+        <el-icon><Right /></el-icon>
       </div>
     </div>
-
-    <div class="category-grid">
-      <article v-for="item in categories" :key="item.title" class="category-item">
-        <div class="icon-box">{{ item.icon }}</div>
-        <h3>{{ item.title }}</h3>
-        <p>{{ item.desc }}</p>
-      </article>
-    </div>
-  </section>
+  </div>
 </template>
 
 <style scoped lang="scss">
-.category-panel {
-  margin-top: 34px;
-}
-
 .category-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-  margin-top: 20px;
+  gap: 24px;
 }
 
-.category-item {
-  padding: 24px;
-  border-radius: 22px;
-  background: #fff;
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+.category-card {
+  background: var(--bg-card);
+  padding: 32px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--slate-100);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  
+  &:hover {
+    border-color: var(--color-primary-soft);
+    
+    .icon-wrapper {
+      transform: scale(1.1);
+      background: var(--color-primary-soft);
+    }
+    
+    .arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
 }
 
-.icon-box {
-  display: grid;
-  place-items: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, rgba(31, 78, 216, 0.12), rgba(217, 79, 43, 0.14));
-  font-size: 28px;
+.icon-wrapper {
+  width: 64px;
+  height: 64px;
+  background: var(--slate-50);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  transition: all 0.3s ease;
+  
+  .category-icon {
+    font-size: 32px;
+  }
 }
 
-.category-item h3 {
-  margin: 18px 0 10px;
+.category-title {
   font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--slate-900);
 }
 
-.category-item p {
-  margin: 0;
-  color: #6b7280;
+.category-desc {
   font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.5;
 }
 
-@media (max-width: 960px) {
+.arrow {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  color: var(--color-primary);
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 1024px) {
   .category-grid {
     grid-template-columns: repeat(2, 1fr);
   }

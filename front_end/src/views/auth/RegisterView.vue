@@ -1,4 +1,4 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { User, Lock, Message, Iphone } from '@element-plus/icons-vue'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { reactive, ref } from 'vue'
@@ -84,178 +84,327 @@ const handleRegister = async () => {
 
 <template>
   <div class="auth-page">
-    <div class="auth-panel page-container register-layout">
-      <section class="form-panel">
-        <div class="form-header">
-          <h2>创建商城账号</h2>
-          <p>推荐方案：注册成功后跳转登录页，再由登录接口统一下发 token，便于鉴权链路一致和审计。</p>
-        </div>
+    <div class="auth-container">
+      <div class="auth-card glass-panel">
+        <div class="form-section">
+          <div class="form-header">
+            <div class="brand-mini" @click="router.push('/home')">
+              <div class="logo"></div>
+              <span>极简商城</span>
+            </div>
+            <h2>创建账号</h2>
+            <p>立即加入我们的品质社区。</p>
+          </div>
 
-        <el-form ref="formRef" :model="form" :rules="rules" label-position="top" size="large">
-          <el-row :gutter="16">
-            <el-col :span="24">
-              <el-form-item label="用户名" prop="username">
-                <el-input v-model="form.username" :prefix-icon="User" placeholder="请输入用户名" clearable />
-              </el-form-item>
-            </el-col>
+          <el-form ref="formRef" :model="form" :rules="rules" label-position="top">
+            <el-form-item label="用户名" prop="username">
+              <el-input v-model="form.username" :prefix-icon="User" placeholder="设置您的用户名" class="custom-input" />
+            </el-form-item>
 
-            <el-col :span="12">
+            <div class="form-row">
               <el-form-item label="密码" prop="password">
                 <el-input
                   v-model="form.password"
                   type="password"
                   show-password
                   :prefix-icon="Lock"
-                  placeholder="请输入密码"
-                  clearable
+                  placeholder="设置密码"
+                  class="custom-input"
                 />
               </el-form-item>
-            </el-col>
 
-            <el-col :span="12">
               <el-form-item label="确认密码" prop="confirmPassword">
                 <el-input
                   v-model="form.confirmPassword"
                   type="password"
                   show-password
                   :prefix-icon="Lock"
-                  placeholder="请再次输入密码"
-                  clearable
+                  placeholder="重复密码"
+                  class="custom-input"
                 />
               </el-form-item>
-            </el-col>
+            </div>
 
-            <el-col :span="12">
+            <div class="form-row">
               <el-form-item label="手机号" prop="phone">
-                <el-input v-model="form.phone" :prefix-icon="Iphone" placeholder="请输入手机号" clearable />
+                <el-input v-model="form.phone" :prefix-icon="Iphone" placeholder="可选填" class="custom-input" />
               </el-form-item>
-            </el-col>
 
-            <el-col :span="12">
               <el-form-item label="邮箱" prop="email">
-                <el-input v-model="form.email" :prefix-icon="Message" placeholder="请输入邮箱" clearable />
+                <el-input v-model="form.email" :prefix-icon="Message" placeholder="可选填" class="custom-input" />
               </el-form-item>
-            </el-col>
-          </el-row>
+            </div>
 
-          <el-button type="primary" class="submit-btn" :loading="loading" @click="handleRegister">
-            注册并前往登录
-          </el-button>
+            <el-button 
+              type="primary" 
+              class="submit-btn" 
+              :loading="loading" 
+              @click="handleRegister"
+            >
+              立即注册
+            </el-button>
 
-          <div class="switch-link">
-            已有账号？
-            <RouterLink to="/login">立即登录</RouterLink>
-          </div>
-        </el-form>
-      </section>
-
-      <section class="side-panel">
-        <div class="side-card">
-          <span class="hero-badge">REGISTER</span>
-          <h3>统一认证入口，便于后续扩展短信、邮箱验证码与第三方登录</h3>
-          <p>注册页与登录页采用统一视觉语言，减少用户认知成本，也方便团队按模块拆分维护。</p>
+            <div class="switch-link">
+              已有账号？
+              <RouterLink to="/login" class="link">立即登录</RouterLink>
+            </div>
+          </el-form>
         </div>
-      </section>
+
+        <div class="side-panel">
+          <div class="side-content">
+            <div class="quote-box">
+              <p class="quote">“简约是最高级的复杂。”</p>
+              <span class="author">— 列奥纳多·达·芬奇</span>
+            </div>
+            
+            <div class="info-grid">
+              <div class="info-item">
+                <span class="val">100%</span>
+                <span class="lbl">安全保障</span>
+              </div>
+              <div class="info-item">
+                <span class="val">24/7</span>
+                <span class="lbl">贴心支持</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    
+    <!-- Decorative elements -->
+    <div class="deco-blob blob-1"></div>
+    <div class="deco-blob blob-2"></div>
   </div>
 </template>
 
 <style scoped lang="scss">
+// ... (Styles remain unchanged)
 .auth-page {
+  min-height: 100vh;
   display: flex;
   align-items: center;
-  min-height: 100vh;
-  padding: 32px 0;
-}
-
-.register-layout {
-  grid-template-columns: 1.25fr 0.75fr;
-}
-
-.auth-panel {
-  display: grid;
+  justify-content: center;
+  background-color: var(--bg-main);
+  position: relative;
   overflow: hidden;
-  border-radius: 32px;
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 28px 70px rgba(15, 23, 42, 0.16);
+  padding: 20px;
 }
 
-.form-panel {
-  padding: 48px 42px;
+.auth-container {
+  width: 100%;
+  max-width: 1100px;
+  z-index: 10;
 }
 
-.form-header h2 {
-  margin: 0;
-  font-size: 30px;
+.auth-card {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  min-height: 650px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
 }
 
-.form-header p {
-  margin: 10px 0 24px;
-  color: #6b7280;
+.form-section {
+  padding: 60px 80px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .form-header {
+    margin-bottom: 40px;
+    
+    .brand-mini {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      cursor: pointer;
+      
+      .logo {
+        width: 24px;
+        height: 24px;
+        background: var(--color-primary);
+        border-radius: 4px;
+      }
+      
+      span {
+        font-weight: 800;
+        font-size: 14px;
+        letter-spacing: 0.05em;
+      }
+    }
+    
+    h2 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    p {
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+:deep(.custom-input) {
+  .el-input__wrapper {
+    background-color: var(--slate-50);
+    box-shadow: none !important;
+    border: 1px solid var(--slate-100);
+    border-radius: var(--radius-md);
+    padding: 10px 16px;
+    transition: all 0.3s ease;
+    
+    &:hover, &.is-focus {
+      border-color: var(--color-primary);
+      background-color: white;
+    }
+  }
 }
 
 .submit-btn {
   width: 100%;
-  height: 48px;
-  margin-top: 8px;
-  border-radius: 14px;
+  height: 56px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 20px -5px rgba(0, 47, 167, 0.2);
+  margin-top: 12px;
+  margin-bottom: 24px;
 }
 
 .switch-link {
-  margin-top: 18px;
-  color: #6b7280;
   text-align: center;
+  font-size: 14px;
+  color: var(--text-muted);
+  
+  .link {
+    color: var(--color-primary);
+    font-weight: 600;
+    margin-left: 4px;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .side-panel {
-  padding: 28px;
-  background: linear-gradient(145deg, #f4f7ff, #fff4ef);
-}
-
-.side-card {
+  background: var(--slate-900);
+  padding: 60px;
+  color: white;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  height: 100%;
-  min-height: 100%;
-  padding: 32px;
-  border-radius: 28px;
-  color: #fff;
-  background: linear-gradient(160deg, #1f4ed8, #d94f2b);
+  align-items: flex-end;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1000&q=80') center;
+    background-size: cover;
+    opacity: 0.3;
+  }
 }
 
-.hero-badge {
-  display: inline-flex;
-  width: fit-content;
-  padding: 7px 14px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.14);
-  font-size: 12px;
-  letter-spacing: 0.1em;
+.side-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
 }
 
-.side-card h3 {
-  margin: 22px 0 14px;
-  font-size: 28px;
-  line-height: 1.3;
+.quote-box {
+  margin-bottom: 60px;
+  
+  .quote {
+    font-size: 24px;
+    font-weight: 600;
+    font-style: italic;
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+  
+  .author {
+    font-size: 14px;
+    color: var(--slate-400);
+    letter-spacing: 0.05em;
+  }
 }
 
-.side-card p {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.82);
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  
+  .info-item {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    
+    .val {
+      display: block;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    
+    .lbl {
+      font-size: 12px;
+      color: var(--slate-400);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+  }
 }
 
-@media (max-width: 960px) {
-  .register-layout {
+.deco-blob {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  filter: blur(80px);
+  opacity: 0.4;
+  z-index: 1;
+  border-radius: 50%;
+}
+
+.blob-1 {
+  top: -100px;
+  right: -100px;
+  background: var(--color-primary-soft);
+}
+
+.blob-2 {
+  bottom: -150px;
+  left: -150px;
+  background: #4f46e533;
+}
+
+@media (max-width: 1024px) {
+  .form-section {
+    padding: 40px;
+  }
+}
+
+@media (max-width: 900px) {
+  .auth-card {
     grid-template-columns: 1fr;
   }
-
+  
   .side-panel {
     display: none;
-  }
-
-  .form-panel {
-    padding: 32px 20px;
   }
 }
 </style>

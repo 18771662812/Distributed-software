@@ -19,23 +19,17 @@ RUN mkdir -p /root/.m2 && printf '%s\n' \
 '  </mirrors>' \
 '</settings>' > /root/.m2/settings.xml
 
-# 复制 pom.xml 和源代码
 COPY pom.xml .
 COPY src ./src
 
-# 编译项目
 RUN mvn clean package -DskipTests
 
-# 运行阶段
 FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
 
-# 从构建阶段复制 JAR 文件
-COPY --from=builder /app/target/shop-*.jar app.jar
+COPY --from=builder /app/target/gateway-*.jar app.jar
 
-# 暴露端口
-EXPOSE 8080
+EXPOSE 8088
 
-# 启动应用
 ENTRYPOINT ["java", "-jar", "app.jar"]

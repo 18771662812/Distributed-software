@@ -66,6 +66,20 @@ CREATE TABLE IF NOT EXISTS `seckill_order` (
   KEY `idx_create_time` (`create_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- 库存表（可选，用于数据库端库存管理）
+CREATE TABLE IF NOT EXISTS `inventory` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `product_id` bigint NOT NULL,
+  `seckill_activity_id` bigint NOT NULL,
+  `total_stock` int NOT NULL,
+  `sold_stock` int NOT NULL DEFAULT 0,
+  `remaining_stock` int NOT NULL,
+  `create_time` bigint,
+  `update_time` bigint,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_product_activity` (`product_id`, `seckill_activity_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- 插入示例商品数据
 INSERT INTO `product` (`name`, `description`, `price`, `stock`, `category`, `status`, `create_time`, `update_time`) VALUES
 ('iPhone 15 Pro', '苹果最新旗舰手机', 7999.00, 100, '手机', 1, UNIX_TIMESTAMP()*1000, UNIX_TIMESTAMP()*1000),

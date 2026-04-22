@@ -189,7 +189,7 @@ GET /seckill/stock/1
 6. ✅ `SeckillServiceImpl.java` - 秒杀服务实现
 7. ✅ `SeckillOrderConsumer.java` - Kafka消费者
 8. ✅ `SeckillController.java` - 秒杀控制器
-9. ✅ `seckill_init.sql` - 数据库初始化脚本
+9. ✅ `init.sql` - 数据库初始化脚本
 10. ✅ `application.yaml` - Kafka配置
 
 ---
